@@ -24,20 +24,13 @@ class Video:
 
     def download(self):
         try:
-            yt_dlp.utils.std_headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            yt_dlp.utils.std_headers['Referer'] = 'https://www.tiktok.com/'
-            with yt_dlp.YoutubeDL() as ydl:
-                # info = ydl.extract_info(self.video_url, download=False)
-                ydl_opts = {
-                    # 'outtmpl': f'{info['uploader']}/{info['upload_date'] + " - " + info['id']}.{info['ext']}',
-                    # 'outtmpl': f'%(uploader)s/%(upload_date)s - %(id)s.%(ext)s',
-                    'outtmpl': "%(uploader)s/%(upload_date)s - %(id)s.%(ext)s",
-                    # 'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-                    'format': '(bv*+ba/b)[vcodec^=h264] / (bv*+ba/b)',
-                }
-                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                    ydl.download([self.video_url])
-                return True
+            ydl_opts = {
+                'outtmpl': "%(uploader)s/%(upload_date)s - %(id)s.%(ext)s",
+                'format': '(bv*+ba/b)[vcodec^=h264] / (bv*+ba/b)',
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([self.video_url])
+            return True
         except Exception as e:
             print(f'Could not download: {self.video_url.strip()} - {e}')
             return False
