@@ -11,8 +11,9 @@ class FileDownloader:
         return video_links
 
     def normalize_link(self, link):
-        if '?is_copy_url=1&is_from_webapp=v1' in link:
-            link = link.removesuffix('?is_copy_url=1&is_from_webapp=v1')
+        # if '?is_copy_url=1&is_from_webapp=v1' in link:
+        #     link = link.removesuffix('?is_copy_url=1&is_from_webapp=v1')
+        link = link.split('?')[0]
         return link
     
     def create_user_folder(self, download_path):
@@ -36,12 +37,18 @@ class FileDownloader:
     def write_video_id(self, video_id, user_name):
         ids_file = f'{user_name}/_ids'
         with open(ids_file, 'a') as file:
-            file.write(f'{video_id}')
+            if "\n" in video_id:
+                file.write(f'{video_id}')
+            else:
+                file.write(f'{video_id}\n')
 
     def write_error(self, video_link):
         ids_file = f'error.txt'
         with open(ids_file, 'a') as file:
-            file.write(f'{video_link}\n')
+            if "\n" in video_link:
+                file.write(f'{video_link}')
+            else:
+                file.write(f'{video_link}\n')
 
     def download_file(self):
         video_links = self.read_video_links()
